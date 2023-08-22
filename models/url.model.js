@@ -7,6 +7,7 @@ const urlSchema = new mongoose.Schema({
     validator: (url) => {
       const pattern =
         /(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,})(\.[a-zA-Z0-9]{2,})?/g;
+      console.log(pattern.test(url));
       return pattern.test(url);
     },
   },

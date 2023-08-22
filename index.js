@@ -4,18 +4,23 @@ import connectDatabase from "./config/db.js";
 import urlModel from "./models/url.model.js";
 import { customAlphabet } from "nanoid";
 import { alphanumeric } from "nanoid-dictionary";
-
+import authRouter from "./routers/auth.router.js";
+import cors from "cors";
 dotenv.config({ path: "./.env" });
 
 const app = express();
 connectDatabase();
 app.use(express.json());
+app.use(cors());
 
 app.get("/", async (req, res) => {
   res.send("Hello");
 });
 
+app.use("/auth", authRouter);
+
 app.post("/shorten", async (req, res) => {
+  console.log("here");
   const { og_url } = req.body;
   const nanoid = customAlphabet(alphanumeric, 6);
   try {
@@ -35,10 +40,11 @@ app.get("/:short_url_code", async (req, res) => {
     const obj = await urlModel.findOne({
       short_url_code: req.params.short_url_code,
     });
-    console.log(obj);
     res.redirect(obj.og_url);
   } catch (error) {
-    console.log(error.message);
+    res.status(400).send({
+      message: error.message,
+    });
   }
 });
 
