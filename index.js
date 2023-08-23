@@ -22,26 +22,11 @@ app.get("/api", authVerify, (req, res) => {
 app.use("/api/auth", authRouter);
 app.use("/api/shorten", authVerify, shortenRouter);
 
-app.post("/api/shorten", async (req, res) => {
-  console.log("here");
-  const { og_url } = req.body;
-  const nanoid = customAlphabet(alphanumeric, 6);
-  try {
-    const newUrl = new urlModel({
-      og_url: og_url,
-      short_url_code: nanoid(6),
-    });
-    console.log(newUrl);
-    res.send(await newUrl.save());
-  } catch (error) {
-    console.log(error.message);
-  }
-});
-
-app.get("/:short_url_code", async (req, res) => {
+app.get("/redirect/:code", async (req, res) => {
+  console.log("hi");
   try {
     const obj = await urlModel.findOne({
-      short_url_code: req.params.short_url_code,
+      short_url_code: req.params.code,
     });
     res.redirect(obj.og_url);
   } catch (error) {
