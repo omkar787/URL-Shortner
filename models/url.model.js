@@ -16,11 +16,11 @@ const urlSchema = new mongoose.Schema({
     required: true,
     minLength: 6,
   },
-  //   created_by: {
-  //     type: mongoose.SchemaTypes.ObjectId,
-  //     required: true,
-  //     ref: "Url",
-  //   },
+  created_by: {
+    type: mongoose.SchemaTypes.ObjectId,
+    required: true,
+    ref: "User",
+  },
   created_at: {
     type: Date,
     required: true,
@@ -38,11 +38,11 @@ const urlSchema = new mongoose.Schema({
   },
 
   // Analytics Portion starts here
-  clicks: {
-    type: Number,
-    required: true,
-    default: 0,
-  },
+  // clicks: {
+  //   type: Number,
+  //   required: true,
+  //   default: 0,
+  // },
 });
 
 export default mongoose.model("Url", urlSchema);

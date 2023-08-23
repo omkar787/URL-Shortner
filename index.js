@@ -7,6 +7,7 @@ import { alphanumeric } from "nanoid-dictionary";
 import authRouter from "./routers/auth.router.js";
 import cors from "cors";
 import authVerify from "./middlewares/authVerify.js";
+import shortenRouter from "./routers/shorten.router.js";
 dotenv.config({ path: "./.env" });
 
 const app = express();
@@ -19,6 +20,7 @@ app.get("/api", authVerify, (req, res) => {
 });
 
 app.use("/api/auth", authRouter);
+app.use("/api/shorten", authVerify, shortenRouter);
 
 app.post("/api/shorten", async (req, res) => {
   console.log("here");
