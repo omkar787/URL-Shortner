@@ -6,6 +6,7 @@ import { customAlphabet } from "nanoid";
 import { alphanumeric } from "nanoid-dictionary";
 import authRouter from "./routers/auth.router.js";
 import cors from "cors";
+import authVerify from "./middlewares/authVerify.js";
 dotenv.config({ path: "./.env" });
 
 const app = express();
@@ -13,13 +14,13 @@ connectDatabase();
 app.use(express.json());
 app.use(cors());
 
-app.get("/", async (req, res) => {
-  res.send("Hello");
+app.get("/api", authVerify, (req, res) => {
+  res.send("Working ");
 });
 
-app.use("/auth", authRouter);
+app.use("/api/auth", authRouter);
 
-app.post("/shorten", async (req, res) => {
+app.post("/api/shorten", async (req, res) => {
   console.log("here");
   const { og_url } = req.body;
   const nanoid = customAlphabet(alphanumeric, 6);
