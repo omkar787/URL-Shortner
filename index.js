@@ -23,7 +23,6 @@ app.use("/api/auth", authRouter);
 app.use("/api/shorten", authVerify, shortenRouter);
 
 app.get("/redirect/:code", async (req, res) => {
-  console.log("hi");
   try {
     const obj = await urlModel.findOne({
       short_url_code: req.params.code,
