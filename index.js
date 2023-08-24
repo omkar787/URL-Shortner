@@ -16,7 +16,10 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/api", authVerify, (req, res) => {
-  res.send("Working ");
+  res.send({
+    authenticated: true,
+    user: req.user,
+  });
 });
 
 app.use("/api/auth", authRouter);
