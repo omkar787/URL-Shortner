@@ -2,12 +2,10 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDatabase from "./config/db.js";
 import urlModel from "./models/url.model.js";
-import { customAlphabet } from "nanoid";
-import { alphanumeric } from "nanoid-dictionary";
-import authRouter from "./routers/auth.router.js";
+import authRouter from "./controllers/auth.router.js";
 import cors from "cors";
 import authVerify from "./middlewares/authVerify.js";
-import shortenRouter from "./routers/shorten.router.js";
+import shortenRouter from "./controllers/shorten.router.js";
 dotenv.config({ path: "./.env" });
 
 const app = express();

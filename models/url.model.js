@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { SchemaTypes } from "mongoose";
 
 const urlSchema = new mongoose.Schema({
   og_url: {
@@ -30,6 +30,11 @@ const urlSchema = new mongoose.Schema({
     type: Date,
     required: true,
     default: () => new Date().getTime(),
+  },
+  category: {
+    type: SchemaTypes.ObjectId,
+    required: true,
+    ref: "Category",
   },
   disabled: {
     type: Boolean,

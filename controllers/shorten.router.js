@@ -1,5 +1,6 @@
 import express from "express";
 import Url from "../models/url.model.js";
+import categoryModel from "../models/category.model.js";
 import { customAlphabet } from "nanoid";
 import { alphanumeric } from "nanoid-dictionary";
 import { body, validationResult } from "express-validator";
@@ -12,10 +13,13 @@ router
       const _id = req.user._id;
       const allUrls = await Url.find({
         created_by: _id,
-      });
+      }).populate("category");
+
+      const categories = await categoryModel.find();
 
       res.status(200).send({
         urls: allUrls,
+        categories: categories,
         count: allUrls.length,
       });
     } catch (error) {
@@ -26,15 +30,19 @@ router
   })
   .post(async (req, res) => {
     try {
-      const { og_url } = req.body;
+      const { og_url, category } = req.body;
       const nanoid = customAlphabet(alphanumeric, 6);
       const newUrl = new Url({
         og_url,
         short_url_code: nanoid(6),
         created_by: req.user._id,
+        category: category,
       });
-      res.status(200).send(await newUrl.save());
+      const data = await (await newUrl.save()).populate("category");
+      console.log(data);
+      res.status(200).send(data);
     } catch (error) {
+      console.log(error);
       res.status(500).send({
         msg: error.message,
       });
@@ -47,7 +55,7 @@ router
 
       if (!url) {
         res.status(400).send({
-          msg: "URl doesn't exists!",
+          msg: "URL doesn't exists!",
         });
         return;
       }
